@@ -14,6 +14,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from glob import glob
+from trainimage import saveimage
 
 from text.detector.detectors import TextDetector
 from apphelper.image import get_boxes,letterbox_image
@@ -78,8 +79,9 @@ def crnnRec(im,boxes,leftAdjust=False,rightAdjust=False,alph=0.2,f=1.0):
        partImg,newW,newH = rotate_cut_img(im,degree,box,w,h,leftAdjust,rightAdjust,alph)
        text = crnnOcr(partImg.convert('L'))
        if text.strip()!=u'':
-            results.append({'cx':cx*f,'cy':cy*f,'text':text,'w':newW*f,'h':newH*f,'degree':degree*180.0/np.pi})
- 
+           results.append({'cx':cx*f,'cy':cy*f,'text':text,'w':newW*f,'h':newH*f,'degree':degree*180.0/np.pi})
+           saveimage.saveimage(partImg,text,newW,newH)
+
    return results
 
 
